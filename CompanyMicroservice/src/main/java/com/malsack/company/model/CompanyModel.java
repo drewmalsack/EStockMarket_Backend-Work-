@@ -8,7 +8,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Document("company")
 public class CompanyModel {
 	@Id
-	private Integer id;
+	private String id;
 	@Field(name = "code")
 	@Indexed(unique = true)
 	private String companyCode;
@@ -40,11 +40,11 @@ public class CompanyModel {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Integer getId() {
+	public String getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 

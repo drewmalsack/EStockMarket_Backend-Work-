@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.repository.Query;
 
 import com.malsack.company.model.CompanyModel;
 
-public interface CompanyRepository extends MongoRepository<CompanyModel, Integer> {
+public interface CompanyRepository extends MongoRepository<CompanyModel, String> {
 
 	@Query("{'code': ?0}")
 	Optional<CompanyModel> findByCompanyCode(String companyCode);
