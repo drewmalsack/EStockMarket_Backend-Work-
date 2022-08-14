@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.transaction.Transactional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +30,8 @@ public class StockController {
 		this.stockService = stockService;
 	}
 	
+	Logger logger=LoggerFactory.getLogger(StockController.class);
+	
 	@PostMapping("/add/{companyCode}")
 	public StockModel addStock(@RequestBody StockModel stockModel, @PathVariable String companyCode) {
 		return stockService.add(stockModel, companyCode);
@@ -35,7 +39,17 @@ public class StockController {
 	
 	@GetMapping("/get/{companyCode}/{start}/{end}")
 	public List<StockModel> getAllStocksByCompanyCode(@PathVariable String companyCode, @PathVariable String start, @PathVariable String end){
-		return stockService.findAllByCompanyCode(companyCode, start, end);
+		List<StockModel> list = stockService.findAllByCompanyCode(companyCode, start, end);
+		if(list.size()==0) {
+			logger.info("no stock prices found between times: "+start+" and: "+end);
+		}else {
+			logger.info("stock prices found: "+list.size());
+			for(int i=0;i<list.size();i++) {
+				logger.info(list.get(i).toString());
+			}
+		}
+		
+		return list;
 		
 	}
 	
