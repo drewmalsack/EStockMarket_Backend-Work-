@@ -2,6 +2,8 @@ package com.malsack.company.controller;
 
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.malsack.company.model.CompanyModel;
 import com.malsack.company.service.CompanyService;
@@ -27,6 +30,8 @@ public class CompanyController {
 		this.companyService = companyService;
 	}
 	
+	Logger logger=LoggerFactory.getLogger(CompanyController.class);
+	
 	@PostMapping("/register")
 	public ResponseEntity<CompanyModel> addCompany(@RequestBody CompanyModel company) {
 		companyService.addCompany(company);
@@ -35,7 +40,13 @@ public class CompanyController {
 	
 	@GetMapping("/info/{companyCode}")
 	public ResponseEntity<CompanyModel> getCompanyInfo(@PathVariable String companyCode) {
-		return ResponseEntity.ok(companyService.getCompanyInfo(companyCode));
+		if(companyService.getCompanyInfo(companyCode).isPresent()) {
+			return ResponseEntity.ok(companyService.getCompanyInfo(companyCode).get());
+		} else {
+			throw new ResponseStatusException(
+					  HttpStatus.NOT_FOUND, "No company found with that code"
+					);
+		}
 	}
 	
 	@GetMapping("/getall")

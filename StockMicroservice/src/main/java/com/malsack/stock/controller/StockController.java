@@ -43,10 +43,7 @@ public class StockController {
 		if(list.size()==0) {
 			logger.info("no stock prices found between times: "+start+" and: "+end);
 		}else {
-			logger.info("stock prices found: "+list.size());
-			for(int i=0;i<list.size();i++) {
-				logger.info(list.get(i).toString());
-			}
+			logger.info("stock prices found: "+list.size()+": "+list.toString());
 		}
 		
 		return list;

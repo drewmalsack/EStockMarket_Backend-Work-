@@ -4,24 +4,41 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+import javax.validation.constraints.Pattern;
 
 @Document("company")
 public class CompanyModel {
 	@Id
 	private String id;
+	
 	@Field(name = "code")
 	@Indexed(unique = true)
+	@Size(min=1, max=5)
+	@NotNull(message = "Company code must not be empty")
 	private String companyCode;
+	
 	@Field(name = "name")
 	@Indexed(unique = true)
+	@NotNull(message = "Company name must not be empty")
 	private String companyName;
+	
 	@Field(name = "ceo")
+	@NotNull(message = "Company CEO must not be empty")
 	private String companyCEO;
+	
+	@NotNull(message = "Company turnover must not be empty")
 	@Field(name = "turnover")
 	private Double companyTurnover;
+	
 	@Field(name = "website")
+	@Pattern(regexp = "^((https?|ftp|smtp):\\/\\/)?(www.)?[a-z0-9]+\\.[a-z]+(\\/[a-zA-Z0-9#]+\\/?)*$")
+	@NotNull(message = "Company website must not be empty")
 	private String companyWebsite;
+	
 	@Field(name = "exchange")
+	@NotNull(message = "Stock exchange must not be empty")
 	private String stockExchange;
 
 	public CompanyModel(Integer id, String companyCode, String companyName, String companyCEO, Double companyTurnover,

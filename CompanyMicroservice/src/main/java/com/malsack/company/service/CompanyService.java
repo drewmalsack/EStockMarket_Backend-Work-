@@ -1,6 +1,7 @@
 package com.malsack.company.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,9 +23,8 @@ public class CompanyService {
 			companyRepository.insert(company);
 		}
 		
-		public CompanyModel getCompanyInfo(String companyCode) {
-			return companyRepository.findByCompanyCode(companyCode).orElseThrow(() -> new RuntimeException(
-					String.format("Cannot Find Company by Code %s",  companyCode)));
+		public Optional<CompanyModel> getCompanyInfo(String companyCode) {
+			return companyRepository.findByCompanyCode(companyCode);
 		}
 		
 		public List<CompanyModel> getAllCompanyInfo() {

@@ -1,7 +1,6 @@
 package com.malsack.stock.model;
 
 import java.sql.Timestamp;
-import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,12 +8,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Table;
 import javax.persistence.Id;
+import javax.validation.constraints.NotNull;
 
 
 @Entity
 @Table(name = "stocks")
 public class StockModel {
-
+	
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private Integer id;
@@ -23,6 +23,7 @@ public class StockModel {
 	private String companyCode;
 
 	@Column(name = "price")
+	@NotNull(message = "Stock price must not be empty")
 	private Double stockPrice;
 
 	@Column(name = "timestamp")
