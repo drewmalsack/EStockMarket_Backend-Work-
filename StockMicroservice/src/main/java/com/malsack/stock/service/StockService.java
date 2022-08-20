@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.TimeZone;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -32,11 +33,24 @@ public class StockService {
 		return stockRepository.save(stock);
 	}
 	
+	public StockModel findLatestPriceByCode(String companyCode) {
+		return stockRepository.findLatestStockPriceByCode(companyCode).get(0);
+	}
+	
 	public List<StockModel> findAllByCompanyCode(String companyCode, String start, String end) {
-		
+		String datetimeLocalS = start;
+		String datetimeLocalE = end;
+		if (StringUtils.countMatches(datetimeLocalS, ":") == 1) {
+		    datetimeLocalS += ":00";
+		}
+		if (StringUtils.countMatches(datetimeLocalE, ":") == 1) {
+		    datetimeLocalE += ":00";
+		}
+		Timestamp valueS = Timestamp.valueOf(datetimeLocalS.replace("T", " "));
+		Timestamp valueE = Timestamp.valueOf(datetimeLocalE.replace("T", " "));
 		return stockRepository.findAll().stream()
-				.filter(x -> x.getCompanyCode().equals(companyCode) && !(x.getPriceTimestamp().before(Timestamp.from(Instant.parse(start))) || x.getPriceTimestamp()
-						.after(Timestamp.from(Instant.parse(end))))).collect(Collectors.toList());
+				.filter(x -> x.getCompanyCode().equals(companyCode) && !(x.getPriceTimestamp().before(valueS) || x.getPriceTimestamp()
+						.after(valueE))).collect(Collectors.toList());
 	}
 	
 	public void deleteAllByCompanyCode(String companyCode) {

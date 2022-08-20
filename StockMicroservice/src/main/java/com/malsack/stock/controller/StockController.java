@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.malsack.stock.model.StockModel;
 import com.malsack.stock.service.StockService;
 
 @RestController
+@CrossOrigin
 @RequestMapping("/api/v1.0/market/stock")
 public class StockController {
 
@@ -48,6 +50,11 @@ public class StockController {
 		
 		return list;
 		
+	}
+	
+	@GetMapping("/getlatest/{companyCode}")
+	public StockModel getLatestByCompanyCode(@PathVariable String companyCode) {
+		return stockService.findLatestPriceByCode(companyCode);
 	}
 	
 	@DeleteMapping("delete/{companyCode}")
