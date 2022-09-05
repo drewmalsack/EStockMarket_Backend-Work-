@@ -1,13 +1,8 @@
 package com.malsack.stock.service;
 
 import java.sql.Timestamp;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
-import java.util.stream.Collectors;
 
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +45,7 @@ public class StockService {
 		Timestamp valueE = Timestamp.valueOf(datetimeLocalE.replace("T", " "));
 		return stockRepository.findAll().stream()
 				.filter(x -> x.getCompanyCode().equals(companyCode) && !(x.getPriceTimestamp().before(valueS) || x.getPriceTimestamp()
-						.after(valueE))).collect(Collectors.toList());
+						.after(valueE))).toList();
 	}
 	
 	public void deleteAllByCompanyCode(String companyCode) {

@@ -39,7 +39,6 @@ public class StockModel {
 
 	public StockModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public Integer getId() {

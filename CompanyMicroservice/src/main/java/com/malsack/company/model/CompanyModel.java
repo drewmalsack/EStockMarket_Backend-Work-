@@ -54,7 +54,6 @@ public class CompanyModel {
 
 	public CompanyModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public String getId() {

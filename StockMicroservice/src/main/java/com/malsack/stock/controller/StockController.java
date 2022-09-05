@@ -1,6 +1,5 @@
 package com.malsack.stock.controller;
 
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -15,13 +14,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.CrossOrigin;
 
 import com.malsack.stock.model.StockModel;
 import com.malsack.stock.service.StockService;
 
 @RestController
-@CrossOrigin
 @RequestMapping("/api/v1.0/market/stock")
 public class StockController {
 
@@ -36,16 +33,16 @@ public class StockController {
 	
 	@PostMapping("/add/{companyCode}")
 	public StockModel addStock(@RequestBody StockModel stockModel, @PathVariable String companyCode) {
-		return stockService.add(stockModel, companyCode);
+		return stockService.add(stockModel, companyCode.toUpperCase());
 	}
 	
 	@GetMapping("/get/{companyCode}/{start}/{end}")
 	public List<StockModel> getAllStocksByCompanyCode(@PathVariable String companyCode, @PathVariable String start, @PathVariable String end){
-		List<StockModel> list = stockService.findAllByCompanyCode(companyCode, start, end);
-		if(list.size()==0) {
-			logger.info("no stock prices found between times: "+start+" and: "+end);
+		List<StockModel> list = stockService.findAllByCompanyCode(companyCode.toUpperCase(), start, end);
+		if(list.isEmpty()) {
+			logger.info("no stock prices found between times: {} and: {}", start, end);
 		}else {
-			logger.info("stock prices found: "+list.size()+": "+list.toString());
+			logger.info("stock prices found: {}:{}", list.size(), list);
 		}
 		
 		return list;
@@ -54,12 +51,12 @@ public class StockController {
 	
 	@GetMapping("/getlatest/{companyCode}")
 	public StockModel getLatestByCompanyCode(@PathVariable String companyCode) {
-		return stockService.findLatestPriceByCode(companyCode);
+		return stockService.findLatestPriceByCode(companyCode.toUpperCase());
 	}
 	
 	@DeleteMapping("delete/{companyCode}")
 	@Transactional
 	public void deleteAllByCompanyCode(@PathVariable String companyCode) {
-		stockService.deleteAllByCompanyCode(companyCode);
+		stockService.deleteAllByCompanyCode(companyCode.toUpperCase());
 	}
 }
